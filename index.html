@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gaming Deal</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --cyan:#00ffcc; --cyan-dim:rgba(0,255,204,0.13); --cyan-b:rgba(0,255,204,0.28);
+  --gold:#ffd700; --gold-dim:rgba(255,215,0,0.12); --gold-b:rgba(255,215,0,0.28);
+  --red:#ff4466;  --red-dim:rgba(255,68,102,0.12);  --red-b:rgba(255,68,102,0.28);
+  --purple:#a78bfa; --purple-dim:rgba(167,139,250,0.12);
+  --bg:#06060e; --bg2:#0a0a16; --bg3:#0e0e1e; --bg4:#12121f;
+  --text:#e0e0f0; --muted:#55556a; --border:rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,204,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,204,0.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan-b);border-radius:3px}
+
+.wrap{max-width:960px;margin:0 auto;padding:16px 14px 60px;position:relative;z-index:1}
+
+/* ── NAV TABS ── */
+.nav{display:flex;gap:0;background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:4px;margin-bottom:16px}
+.nav-btn{flex:1;background:transparent;border:none;border-radius:9px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;padding:8px 6px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:5px}
+.nav-btn:hover{color:var(--text)}
+.nav-btn.on{background:var(--bg3);color:var(--cyan);box-shadow:0 0 12px rgba(0,255,204,0.08)}
+.nav-btn .badge-count{background:var(--red);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;min-width:18px;text-align:center}
+
+/* ── HEADER ── */
+header{text-align:center;padding:1.5rem 1rem 1.2rem;margin-bottom:1rem;position:relative}
+header::after{content:'';display:block;width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:.9rem auto 0}
+.logo{font-family:'Orbitron',monospace;font-size:clamp(18px,4.5vw,32px);font-weight:900;color:var(--cyan);letter-spacing:5px;text-shadow:0 0 25px rgba(0,255,204,0.35);animation:glow 3s ease-in-out infinite}
+@keyframes glow{0%,100%{text-shadow:0 0 15px rgba(0,255,204,0.25)}50%{text-shadow:0 0 35px rgba(0,255,204,0.6)}}
+.sub{font-size:12px;color:var(--muted);margin-top:5px;letter-spacing:1px}
+.stats-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.stat{background:var(--cyan-dim);border:0.5px solid var(--cyan-b);border-radius:20px;padding:3px 12px;font-size:11px;color:var(--cyan);font-weight:600}
+.stat.gold{background:var(--gold-dim);border-color:var(--gold-b);color:var(--gold)}
+.stat.red{background:var(--red-dim);border-color:var(--red-b);color:var(--red)}
+.stat.purple{background:var(--purple-dim);border-color:rgba(167,139,250,0.3);color:var(--purple)}
+
+/* ── CONTROLS ── */
+.controls{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.search-wrap{flex:1;min-width:160px;position:relative}
+.search-wrap svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);opacity:.35;pointer-events:none;width:15px;height:15px}
+input[type=text]{width:100%;padding:8px 32px 8px 10px;background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:rgba(0,255,204,.55)}
+input[type=text]::placeholder{color:var(--muted)}
+input[type=number]{width:80px;padding:8px 8px;background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:12px;outline:none}
+select{background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:10px;color:var(--text);font-family:'Cairo',sans-serif;font-size:12px;padding:8px 10px;outline:none;cursor:pointer}
+select option{background:var(--bg2)}
+button{background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:10px;color:var(--cyan);font-family:'Cairo',sans-serif;font-size:12px;font-weight:600;padding:8px 14px;cursor:pointer;transition:all .2s;white-space:nowrap}
+button:hover{background:var(--cyan-dim);border-color:rgba(0,255,204,.5)}
+button.on{background:rgba(0,255,204,.18);border-color:rgba(0,255,204,.7)}
+
+/* ── PRICE FILTER ── */
+.price-filter{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.price-filter label{font-size:12px;color:var(--muted)}
+
+/* ── CHIPS ── */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{background:var(--bg2);border:0.5px solid var(--border);border-radius:20px;color:var(--muted);font-size:11px;font-family:'Cairo',sans-serif;padding:3px 11px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.chip:hover{border-color:var(--cyan-b);color:#aaa}
+.chip.on{background:var(--cyan-dim);border-color:rgba(0,255,204,.6);color:var(--cyan);font-weight:600}
+
+/* ── ALERT BAR ── */
+.alert-bar{background:var(--bg2);border:0.5px solid var(--gold-b);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.alert-bar label{font-size:12px;color:var(--gold);font-weight:600}
+.alert-bar input[type=number]{width:70px;border-color:var(--gold-b)}
+.alert-bar button{border-color:var(--gold-b);color:var(--gold);font-size:11px;padding:6px 12px}
+.alert-bar button:hover{background:var(--gold-dim)}
+#alertList{font-size:11px;color:var(--muted);margin-top:6px;width:100%}
+.alert-item{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:0.5px solid var(--gold-b);border-radius:6px;padding:2px 8px;margin:2px;color:var(--gold)}
+.alert-item button{background:none;border:none;color:var(--gold);padding:0 2px;font-size:12px;min-width:unset}
+
+/* ── LOADER ── */
+.loader{text-align:center;padding:4rem 1rem}
+.spinner{width:40px;height:40px;border:2px solid rgba(0,255,204,.12);border-top-color:var(--cyan);border-radius:50%;margin:0 auto 14px;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader p{color:var(--muted);font-size:13px}
+
+/* ── GRID ── */
+.grid{display:flex;flex-direction:column;gap:9px}
+
+/* ── CARD ── */
+.card{display:flex;height:115px;background:var(--bg2);border:0.5px solid rgba(0,255,204,.09);border-radius:14px;overflow:hidden;position:relative;transition:border-color .2s,transform .2s;animation:fadeUp .3s ease forwards;opacity:0;cursor:pointer}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card:hover{border-color:rgba(0,255,204,.4);transform:translateX(-3px)}
+.card.fav-card{border-color:rgba(255,215,0,.3)}
+.card::before{content:'';position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--cyan);border-radius:0 14px 14px 0}
+.card.free-c::before{background:var(--gold)}
+.card.hot-c::before{background:var(--red)}
+
+.thumb{width:105px;min-width:105px;background:var(--bg3);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-ph{font-size:30px;opacity:.18}
+.fav-star{position:absolute;top:5px;left:5px;font-size:16px;cursor:pointer;z-index:5;transition:transform .2s;line-height:1}
+.fav-star:hover{transform:scale(1.3)}
+
+.cbody{flex:1;padding:10px 13px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.game-title{font-size:13px;font-weight:700;color:#f0f0fa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap}
+.badge{border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700}
+.bc{background:var(--cyan-dim);border:0.5px solid var(--cyan-b);color:var(--cyan)}
+.bg{background:var(--gold-dim);border:0.5px solid var(--gold-b);color:var(--gold)}
+.br{background:var(--red-dim);border:0.5px solid var(--red-b);color:var(--red)}
+.bp{background:var(--purple-dim);border:0.5px solid rgba(167,139,250,.3);color:var(--purple)}
+.store-lbl{font-size:10px;color:var(--muted);margin-right:auto}
+.rating-txt{font-size:10px;color:var(--muted)}
+
+.cfoot{display:flex;align-items:center;justify-content:space-between;margin-top:5px}
+.prices{display:flex;align-items:baseline;gap:6px}
+.p-now{font-size:15px;font-weight:700;color:#fff}
+.p-free{font-size:14px;font-weight:700;color:var(--gold)}
+.p-old{font-size:10px;color:var(--muted);text-decoration:line-through}
+
+.cfoot-btns{display:flex;gap:6px;align-items:center}
+a.get-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;border:0.5px solid rgba(0,255,204,.4);border-radius:8px;color:var(--cyan);font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;padding:4px 10px;text-decoration:none;transition:all .2s;white-space:nowrap}
+a.get-btn:hover{background:var(--cyan-dim);border-color:var(--cyan)}
+a.get-btn.gb{border-color:rgba(255,215,0,.4);color:var(--gold)}
+a.get-btn.gb:hover{background:var(--gold-dim);border-color:var(--gold)}
+.compare-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;border:0.5px solid var(--purple-dim);border-color:rgba(167,139,250,.35);border-radius:8px;color:var(--purple);font-family:'Cairo',sans-serif;font-size:10px;font-weight:700;padding:4px 9px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.compare-btn:hover{background:var(--purple-dim)}
+
+/* ── LOAD MORE ── */
+.load-more-btn{display:block;margin:1.2rem auto 0;background:var(--cyan-dim);border:0.5px solid var(--cyan-b);border-radius:10px;color:var(--cyan);font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;padding:9px 28px;cursor:pointer;transition:all .2s}
+.load-more-btn:hover{background:rgba(0,255,204,.2)}
+.load-more-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* ── PAGER ── */
+.pager{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:1.2rem;flex-wrap:wrap}
+.pg{background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:8px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:12px;padding:5px 13px;cursor:pointer;transition:all .2s}
+.pg:hover{color:var(--cyan);border-color:rgba(0,255,204,.5)}
+.pg.on{background:var(--cyan-dim);border-color:rgba(0,255,204,.7);color:var(--cyan)}
+.pg:disabled{opacity:.2;cursor:not-allowed}
+.pg-info{font-size:11px;color:var(--muted)}
+
+/* ── MODAL ── */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;backdrop-filter:blur(4px)}
+.modal{background:var(--bg2);border:0.5px solid var(--cyan-b);border-radius:16px;width:100%;max-width:680px;overflow:hidden;animation:modalIn .25s ease;margin:auto}
+@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.modal-hero{position:relative;height:200px;background:var(--bg3);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.modal-hero img{width:100%;height:100%;object-fit:cover;opacity:.7}
+.modal-hero-ph{font-size:60px;opacity:.12}
+.modal-close{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.6);border:0.5px solid var(--border);border-radius:8px;color:var(--text);font-size:18px;padding:4px 10px;cursor:pointer;line-height:1;transition:background .2s}
+.modal-close:hover{background:rgba(255,68,102,.3);color:var(--red)}
+.modal-fav{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.6);border:0.5px solid var(--border);border-radius:8px;font-size:20px;padding:4px 10px;cursor:pointer;line-height:1;transition:transform .2s}
+.modal-fav:hover{transform:scale(1.2)}
+.modal-body{padding:20px}
+.modal-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:10px}
+.modal-badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.modal-scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.score-box{background:var(--bg3);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center}
+.score-box .label{font-size:10px;color:var(--muted);margin-bottom:4px}
+.score-box .val{font-size:22px;font-weight:700}
+.score-box .val.cyan{color:var(--cyan)}
+.score-box .val.gold{color:var(--gold)}
+.score-box .val.red{color:var(--red)}
+.score-box .val.purple{color:var(--purple)}
+
+/* Compare table */
+.compare-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px}
+.compare-table th{text-align:right;padding:7px 10px;background:var(--bg3);color:var(--muted);font-weight:600;border-bottom:0.5px solid var(--border)}
+.compare-table td{padding:8px 10px;border-bottom:0.5px solid var(--border)}
+.compare-table tr:hover td{background:rgba(255,255,255,.02)}
+.compare-table .best{color:var(--cyan);font-weight:700}
+.compare-table a{color:var(--cyan);text-decoration:none;font-size:11px}
+.compare-table a:hover{text-decoration:underline}
+.cmp-loading{text-align:center;padding:1.5rem;color:var(--muted)}
+.cmp-spinner{width:24px;height:24px;border:2px solid rgba(0,255,204,.12);border-top-color:var(--cyan);border-radius:50%;margin:0 auto 8px;animation:spin .7s linear infinite}
+
+.modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.modal-actions a{flex:1;min-width:120px;text-align:center;padding:10px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none;transition:all .2s}
+.btn-steam{background:var(--cyan-dim);border:0.5px solid var(--cyan-b);color:var(--cyan)}
+.btn-steam:hover{background:rgba(0,255,204,.22)}
+.btn-cheap{background:var(--purple-dim);border:0.5px solid rgba(167,139,250,.3);color:var(--purple)}
+.btn-cheap:hover{background:rgba(167,139,250,.2)}
+
+/* ── FAVS PAGE ── */
+.favs-empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.favs-empty .big{font-size:48px;display:block;margin-bottom:12px}
+
+/* ── EMPTY / ERR ── */
+.empty,.err{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.err{color:var(--red);border:0.5px solid var(--red-b);border-radius:14px;background:var(--red-dim);margin-top:1rem}
+.big-icon{font-size:44px;display:block;margin-bottom:12px}
+
+/* ── FOOTER ── */
+footer{text-align:center;margin-top:3rem;font-size:11px;color:var(--muted);direction:ltr}
+footer a{color:var(--cyan);text-decoration:none}
+
+/* ── NOTIFICATION TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);border:0.5px solid var(--cyan-b);border-radius:12px;padding:12px 22px;font-size:13px;color:var(--cyan);z-index:9999;transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.gold-toast{border-color:var(--gold-b);color:var(--gold)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">▲ Gaming Deal ▲</div>
+    <div class="sub">عروض وتخفيضات الألعاب الحية · الأسعار بالريال السعودي</div>
+    <div class="stats-row" id="stats"><span class="stat">⏳ جاري التحميل...</span></div>
+  </header>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn on" onclick="switchTab('deals')" id="tab-deals">🎮 العروض</button>
+    <button class="nav-btn" onclick="switchTab('favs')" id="tab-favs">⭐ المفضلة <span class="badge-count" id="favCount">0</span></button>
+    <button class="nav-btn" onclick="switchTab('alerts')" id="tab-alerts">🔔 التنبيهات <span class="badge-count" id="alertCount">0</span></button>
+  </div>
+
+  <!-- DEALS TAB -->
+  <div id="page-deals">
+    <div class="controls">
+      <div class="search-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="q" placeholder="ابحث عن لعبة... Search game..." oninput="onSearch()" />
+      </div>
+      <select id="sortSel" onchange="applyFilters()">
+        <option value="disc">أعلى خصم</option>
+        <option value="pasc">أقل سعر</option>
+        <option value="pdesc">أعلى سعر</option>
+        <option value="rate">التقييم</option>
+        <option value="meta">Metacritic</option>
+        <option value="free">المجانية أولاً</option>
+      </select>
+      <button id="freeBtn" onclick="toggleFree()">🎁 مجاني</button>
+      <button onclick="refresh()">🔄</button>
+    </div>
+
+    <div class="price-filter">
+      <label>السعر (ر.س):</label>
+      <input type="number" id="priceMin" placeholder="من" min="0" oninput="applyFilters()" style="width:70px" />
+      <label>—</label>
+      <input type="number" id="priceMax" placeholder="إلى" min="0" oninput="applyFilters()" style="width:70px" />
+      <label style="margin-right:12px">Metacritic:</label>
+      <input type="number" id="metaMin" placeholder="0" min="0" max="100" oninput="applyFilters()" style="width:60px" />
+      <label>+</label>
+    </div>
+
+    <div class="chips" id="chips"></div>
+    <div id="content"></div>
+    <div class="pager" id="pager"></div>
+  </div>
+
+  <!-- FAVS TAB -->
+  <div id="page-favs" style="display:none">
+    <div id="favs-content"></div>
+  </div>
+
+  <!-- ALERTS TAB -->
+  <div id="page-alerts" style="display:none">
+    <div class="alert-bar">
+      <label>🔔 إشعار عند خصم أكبر من:</label>
+      <input type="number" id="alertDisc" placeholder="٪" min="1" max="99" style="width:65px;border-color:var(--gold-b)" />
+      <label>أو سعر أقل من (ر.س):</label>
+      <input type="number" id="alertPrice" placeholder="سعر" min="0" style="width:75px;border-color:var(--gold-b)" />
+      <button onclick="addAlert()" style="border-color:var(--gold-b);color:var(--gold)">+ إضافة تنبيه</button>
+      <div id="alertList"></div>
+    </div>
+    <div id="alerts-content"></div>
+  </div>
+
+  <footer>Powered by <a href="https://www.cheapshark.com" target="_blank">CheapShark API</a> · بيانات حية من Steam وEpic وGOG وغيرها</footer>
+</div>
+
+<!-- MODAL -->
+<div id="modal" style="display:none" class="modal-backdrop" onclick="closeModal(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-hero" id="modalHero"></div>
+    <div class="modal-body">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-badges" id="modalBadges"></div>
+      <div class="modal-scores" id="modalScores"></div>
+      <div id="compareSection"></div>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const RATE=3.75, PG=20;
+let all=[],fil=[],page=1,freeOnly=false,store='all';
+let loadedP=0,loading=false,currentTab='deals';
+let favs=new Set(JSON.parse(localStorage.getItem('sh_favs')||'[]'));
+let alerts=JSON.parse(localStorage.getItem('sh_alerts')||'[]');
+let searchTimer;
+
+const storeMap={'1':'Steam','2':'GamersGate','3':'GreenManGaming','6':'Direct2Drive','7':'GOG','8':'Origin','11':'Humble','13':'Fanatical','15':'Itch.io','21':'WinGameStore','27':'Epic Games','28':'IndieGala','29':'Blizzard','34':'AllyouPlay','37':'SilentEra'};
+
+function toSAR(p){const v=parseFloat(p);if(v===0)return null;return 'ر.س '+Math.round(v*RATE);}
+function toSARNum(p){return Math.round(parseFloat(p)*RATE);}
+function parse(raw){
+  return raw.filter(Boolean).map(d=>({
+    id:d.dealID,title:d.title,
+    savings:Math.round(parseFloat(d.savings)),
+    sale:parseFloat(d.salePrice),normal:parseFloat(d.normalPrice),
+    saleSAR:toSAR(d.salePrice),normSAR:toSAR(d.normalPrice),
+    saleSARNum:toSARNum(d.salePrice),
+    free:parseFloat(d.salePrice)===0,
+    thumb:d.thumb,rating:d.steamRatingText||'',
+    ratingPct:parseInt(d.steamRatingPercent)||0,
+    meta:parseInt(d.metacriticScore)||0,
+    storeID:d.storeID,store:storeMap[d.storeID]||'Store #'+d.storeID,
+    steamAppID:d.steamAppID||null,
+    gameID:d.gameID||null,
+    title_lower:d.title.toLowerCase()
+  }));
+}
+
+/* ── LOAD ── */
+async function loadFirst(){
+  show(`<div class="loader"><div class="spinner"></div><p>جاري جلب أحدث العروض...</p><p style="margin-top:5px;font-size:11px">Fetching from CheapShark API...</p></div>`);
+  try{
+    const res=await fetch('https://www.cheapshark.com/api/1.0/deals?pageSize=60&pageNumber=0&onSale=1');
+    const raw=await res.json();
+    all=parse(raw); loadedP=1;
+    buildChips(); applyFilters(); setStats();
+    checkAlerts();
+  }catch(e){
+    show(`<div class="err"><span class="big-icon">📡</span><strong>تعذّر الاتصال بـ CheapShark API</strong><br><br>تأكد من الاتصال بالإنترنت ثم اضغط 🔄</div>`);
+  }
+}
+
+async function loadMore(){
+  if(loading||loadedP>=10)return;
+  loading=true;
+  const btn=document.getElementById('moreBtn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ جاري...';}
+  try{
+    const reqs=[];
+    for(let i=loadedP;i<Math.min(loadedP+4,10);i++)
+      reqs.push(fetch(`https://www.cheapshark.com/api/1.0/deals?pageSize=60&pageNumber=${i}&onSale=1`).then(r=>r.json()));
+    const pages=await Promise.all(reqs);
+    const ids=new Set(all.map(d=>d.id));
+    parse(pages.flat()).forEach(d=>{if(!ids.has(d.id)){all.push(d);ids.add(d.id);}});
+    loadedP+=reqs.length;
+    buildChips(); applyFilters(); setStats(); checkAlerts();
+  }catch(e){}
+  loading=false;
+}
+
+function refresh(){all=[];loadedP=0;loadFirst();}
+
+/* ── FILTERS ── */
+function buildChips(){
+  const ids={};
+  all.forEach(d=>{if(!ids[d.storeID])ids[d.storeID]=d.store;});
+  let h=`<span class="chip on" data-s="all" onclick="setStore('all')">🌐 الكل</span>`;
+  Object.entries(ids).slice(0,12).forEach(([id,name])=>{
+    h+=`<span class="chip ${store===id?'on':''}" data-s="${id}" onclick="setStore('${id}')">${name}</span>`;
+  });
+  document.getElementById('chips').innerHTML=h;
+}
+
+function setStore(s){
+  store=s;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.dataset.s===s));
+  page=1; applyFilters();
+}
+
+function toggleFree(){
+  freeOnly=!freeOnly;
+  document.getElementById('freeBtn').classList.toggle('on',freeOnly);
+  page=1; applyFilters();
+}
+
+function onSearch(){clearTimeout(searchTimer);searchTimer=setTimeout(()=>{page=1;applyFilters();},180);}
+
+function applyFilters(){
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  const srt=document.getElementById('sortSel').value;
+  const pMin=parseFloat(document.getElementById('priceMin').value)||0;
+  const pMax=parseFloat(document.getElementById('priceMax').value)||Infinity;
+  const mMin=parseInt(document.getElementById('metaMin').value)||0;
+
+  fil=all.filter(d=>{
+    if(freeOnly&&!d.free)return false;
+    if(store!=='all'&&d.storeID!==store)return false;
+    if(q&&!d.title_lower.includes(q))return false;
+    if(d.saleSARNum<pMin||d.saleSARNum>pMax)return false;
+    if(mMin>0&&d.meta<mMin)return false;
+    return true;
+  });
+
+  fil.sort((a,b)=>{
+    if(srt==='disc') return b.savings-a.savings;
+    if(srt==='pasc') return a.sale-b.sale;
+    if(srt==='pdesc') return b.sale-a.sale;
+    if(srt==='rate') return b.ratingPct-a.ratingPct;
+    if(srt==='meta') return b.meta-a.meta;
+    if(srt==='free') return (b.free?1:0)-(a.free?1:0);
+    return 0;
+  });
+  page=1; render();
+}
+
+/* ── RENDER ── */
+function render(){
+  const total=Math.ceil(fil.length/PG);
+  const slice=fil.slice((page-1)*PG,page*PG);
+  if(!slice.length){
+    show(`<div class="empty"><span class="big-icon">🔍</span>لا توجد نتائج مطابقة</div>`);
+    document.getElementById('pager').innerHTML='';
+    return;
+  }
+  const cards=slice.map((d,i)=>{
+    const hot=d.savings>=75,isFav=favs.has(d.id);
+    const cls=d.free?'free-c':hot?'hot-c':'';
+    const favCls=isFav?'fav-card':'';
+    const delay=`animation-delay:${i*25}ms`;
+    const img=d.thumb?`<img src="${d.thumb}" alt="" loading="lazy" onerror="this.style.display='none'" />`:`<span class="thumb-ph">🎮</span>`;
+    let badges='';
+    if(d.free) badges+=`<span class="badge bg">🎁 مجاني</span>`;
+    else if(hot) badges+=`<span class="badge br">🔥 -${d.savings}%</span>`;
+    else if(d.savings) badges+=`<span class="badge bc">-${d.savings}%</span>`;
+    if(d.meta>0) badges+=`<span class="badge bp">MC ${d.meta}</span>`;
+    if(d.rating) badges+=`<span class="rating-txt">${d.rating}</span>`;
+    const price=d.free?`<span class="p-free">مجاني</span>`:`<span class="p-now">${d.saleSAR}</span><span class="p-old">${d.normSAR||''}</span>`;
+    const aCls=d.free?'get-btn gb':'get-btn';
+    const url=`https://www.cheapshark.com/redirect?dealID=${d.id}`;
+    return `
+    <div class="card ${cls} ${favCls}" style="${delay}" onclick="openDetail('${d.id}')">
+      <div class="thumb">
+        ${img}
+        <span class="fav-star" onclick="event.stopPropagation();toggleFav('${d.id}')" title="${isFav?'إزالة من المفضلة':'إضافة للمفضلة'}">${isFav?'⭐':'☆'}</span>
+      </div>
+      <div class="cbody">
+        <div>
+          <div class="game-title">${d.title}</div>
+          <div class="meta">${badges}<span class="store-lbl">${d.store}</span></div>
+        </div>
+        <div class="cfoot">
+          <div class="prices">${price}</div>
+          <div class="cfoot-btns">
+            <span class="compare-btn" onclick="event.stopPropagation();openDetail('${d.id}',true)">⚖ قارن</span>
+            <a href="${url}" target="_blank" class="${aCls}" onclick="event.stopPropagation()">احصل عليها ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const moreBtn=(loadedP<10&&page===total)?`<button class="load-more-btn" id="moreBtn" onclick="loadMore()">⬇ تحميل المزيد (${all.length} عرض محمّل)</button>`:'';
+  show(`<div class="grid">${cards}</div>${moreBtn}`);
+  renderPager(total);
+}
+
+function renderPager(total){
+  const el=document.getElementById('pager');
+  if(total<=1){el.innerHTML='';return;}
+  const s=Math.max(1,page-2),e=Math.min(total,s+4);
+  let h=`<button class="pg" onclick="go(${page-1})" ${page===1?'disabled':''}>→</button>`;
+  for(let i=s;i<=e;i++) h+=`<button class="pg ${i===page?'on':''}" onclick="go(${i})">${i}</button>`;
+  h+=`<button class="pg" onclick="go(${page+1})" ${page===total?'disabled':''}>←</button>`;
+  h+=`<span class="pg-info">${fil.length} عرض · ${page}/${total}</span>`;
+  el.innerHTML=h;
+}
+
+function go(n){
+  const t=Math.ceil(fil.length/PG);
+  if(n<1||n>t)return;
+  page=n; render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function show(h){document.getElementById('content').innerHTML=h;}
+
+/* ── STATS ── */
+function setStats(){
+  const fr=all.filter(d=>d.free).length;
+  const hot=all.filter(d=>d.savings>=75).length;
+  const avg=all.length?Math.round(all.reduce((s,d)=>s+d.savings,0)/all.length):0;
+  document.getElementById('stats').innerHTML=`
+    <span class="stat">🏷 ${all.length} عرض</span>
+    <span class="stat gold">🎁 ${fr} مجانية</span>
+    <span class="stat red">🔥 ${hot} خصم +75%</span>
+    <span class="stat">متوسط ${avg}%</span>
+    <span class="stat purple">⭐ ${favs.size} مفضلة</span>`;
+}
+
+/* ── FAVS ── */
+function toggleFav(id){
+  if(favs.has(id)){favs.delete(id);toast('تمت الإزالة من المفضلة');}
+  else{favs.add(id);toast('✅ أُضيف للمفضلة','gold');}
+  localStorage.setItem('sh_favs',JSON.stringify([...favs]));
+  updateFavCount(); render(); renderFavs();
+}
+
+function updateFavCount(){
+  document.getElementById('favCount').textContent=favs.size;
+}
+
+function renderFavs(){
+  const favDeals=all.filter(d=>favs.has(d.id));
+  const el=document.getElementById('favs-content');
+  if(!favDeals.length){
+    el.innerHTML=`<div class="favs-empty"><span class="big">⭐</span>لا توجد ألعاب في المفضلة بعد<br><small style="margin-top:8px;display:block;color:var(--muted)">اضغط ☆ على أي لعبة لحفظها هنا</small></div>`;
+    return;
+  }
+  const cards=favDeals.map(d=>{
+    const hot=d.savings>=75;const cls=d.free?'free-c':hot?'hot-c':'';
+    const img=d.thumb?`<img src="${d.thumb}" alt="" loading="lazy" />`:`<span class="thumb-ph">🎮</span>`;
+    const price=d.free?`<span class="p-free">مجاني</span>`:`<span class="p-now">${d.saleSAR}</span><span class="p-old">${d.normSAR||''}</span>`;
+    const url=`https://www.cheapshark.com/redirect?dealID=${d.id}`;
+    return `<div class="card ${cls} fav-card" onclick="openDetail('${d.id}')">
+      <div class="thumb">${img}<span class="fav-star" onclick="event.stopPropagation();toggleFav('${d.id}')">⭐</span></div>
+      <div class="cbody">
+        <div><div class="game-title">${d.title}</div><div class="meta"><span class="store-lbl">${d.store}</span></div></div>
+        <div class="cfoot"><div class="prices">${price}</div>
+        <a href="${url}" target="_blank" class="get-btn" onclick="event.stopPropagation()">احصل عليها ↗</a></div>
+      </div></div>`;
+  }).join('');
+  el.innerHTML=`<div class="grid">${cards}</div>`;
+}
+
+/* ── ALERTS ── */
+function addAlert(){
+  const disc=parseInt(document.getElementById('alertDisc').value)||0;
+  const price=parseFloat(document.getElementById('alertPrice').value)||0;
+  if(!disc&&!price){toast('⚠ أدخل قيمة للتنبيه','red');return;}
+  const a={id:Date.now(),disc,price};
+  alerts.push(a);
+  localStorage.setItem('sh_alerts',JSON.stringify(alerts));
+  document.getElementById('alertDisc').value='';
+  document.getElementById('alertPrice').value='';
+  renderAlertList();
+  updateAlertCount();
+  checkAlerts();
+  toast('🔔 تم إضافة التنبيه');
+}
+
+function removeAlert(id){
+  alerts=alerts.filter(a=>a.id!==id);
+  localStorage.setItem('sh_alerts',JSON.stringify(alerts));
+  renderAlertList(); updateAlertCount(); checkAlerts();
+}
+
+function renderAlertList(){
+  const el=document.getElementById('alertList');
+  if(!alerts.length){el.innerHTML='<span style="color:var(--muted);font-size:11px">لا توجد تنبيهات</span>';return;}
+  el.innerHTML=alerts.map(a=>{
+    const parts=[];
+    if(a.disc) parts.push(`خصم >${a.disc}%`);
+    if(a.price) parts.push(`سعر <ر.س${Math.round(a.price*RATE)}`);
+    return `<span class="alert-item">${parts.join(' | ')}<button onclick="removeAlert(${a.id})">✕</button></span>`;
+  }).join('');
+}
+
+function updateAlertCount(){
+  document.getElementById('alertCount').textContent=alerts.length;
+}
+
+function checkAlerts(){
+  if(!alerts.length||!all.length)return;
+  const matches=[];
+  all.forEach(d=>{
+    alerts.forEach(a=>{
+      const discMatch=a.disc&&d.savings>=a.disc;
+      const priceMatch=a.price&&d.sale>0&&d.saleSARNum<=Math.round(a.price*RATE);
+      if(discMatch||priceMatch) matches.push(d);
+    });
+  });
+  const unique=[...new Map(matches.map(d=>[d.id,d])).values()];
+  const el=document.getElementById('alerts-content');
+  if(!unique.length){
+    el.innerHTML=`<div class="empty"><span class="big-icon">🔔</span>لا توجد عروض مطابقة لتنبيهاتك حالياً</div>`;
+    return;
+  }
+  const cards=unique.map(d=>{
+    const hot=d.savings>=75;const cls=d.free?'free-c':hot?'hot-c':'';
+    const img=d.thumb?`<img src="${d.thumb}" alt="" loading="lazy" />`:`<span class="thumb-ph">🎮</span>`;
+    const price=d.free?`<span class="p-free">مجاني</span>`:`<span class="p-now">${d.saleSAR}</span><span class="p-old">${d.normSAR||''}</span>`;
+    const url=`https://www.cheapshark.com/redirect?dealID=${d.id}`;
+    return `<div class="card ${cls}" onclick="openDetail('${d.id}')">
+      <div class="thumb">${img}</div>
+      <div class="cbody">
+        <div><div class="game-title">${d.title}</div>
+        <div class="meta"><span class="badge br">🔔 مطابق للتنبيه</span><span class="store-lbl">${d.store}</span></div></div>
+        <div class="cfoot"><div class="prices">${price}</div>
+        <a href="${url}" target="_blank" class="get-btn" onclick="event.stopPropagation()">احصل عليها ↗</a></div>
+      </div></div>`;
+  }).join('');
+  el.innerHTML=`<h3 style="font-size:14px;color:var(--gold);margin-bottom:10px">🔔 ${unique.length} عرض مطابق لتنبيهاتك</h3><div class="grid">${cards}</div>`;
+}
+
+/* ── DETAIL MODAL ── */
+async function openDetail(id, compareMode=false){
+  const d=all.find(x=>x.id===id);
+  if(!d)return;
+  const isFav=favs.has(id);
+  const hot=d.savings>=75;
+  document.getElementById('modalHero').innerHTML=d.thumb?`<img src="${d.thumb}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:.65" /><button class="modal-close" onclick="closeModalDirect()">✕</button><button class="modal-fav" onclick="toggleFav('${id}')" id="modalFavBtn">${isFav?'⭐':'☆'}</button>`:`<span class="modal-hero-ph">🎮</span><button class="modal-close" onclick="closeModalDirect()">✕</button><button class="modal-fav" onclick="toggleFav('${id}')" id="modalFavBtn">${isFav?'⭐':'☆'}</button>`;
+  document.getElementById('modalTitle').textContent=d.title;
+
+  // badges
+  let b='';
+  if(d.free) b+=`<span class="badge bg">🎁 مجاني تماماً</span>`;
+  else if(hot) b+=`<span class="badge br">🔥 خصم ${d.savings}%</span>`;
+  else if(d.savings) b+=`<span class="badge bc">-${d.savings}%</span>`;
+  if(d.meta>0) b+=`<span class="badge bp">Metacritic: ${d.meta}</span>`;
+  if(d.rating) b+=`<span class="badge bc">${d.rating}</span>`;
+  document.getElementById('modalBadges').innerHTML=b;
+
+  // scores
+  const ratingColor=d.ratingPct>=75?'cyan':d.ratingPct>=50?'gold':'red';
+  const metaColor=d.meta>=75?'cyan':d.meta>=50?'gold':d.meta>0?'red':'';
+  document.getElementById('modalScores').innerHTML=`
+    <div class="score-box"><div class="label">السعر الحالي</div><div class="val cyan">${d.free?'مجاني':d.saleSAR}</div></div>
+    <div class="score-box"><div class="label">السعر الأصلي</div><div class="val" style="font-size:16px;color:var(--muted)">${d.normSAR||'—'}</div></div>
+    <div class="score-box"><div class="label">نسبة الخصم</div><div class="val red">${d.savings}%</div></div>
+    ${d.ratingPct?`<div class="score-box"><div class="label">تقييم Steam</div><div class="val ${ratingColor}">${d.ratingPct}%</div></div>`:''}
+    ${d.meta?`<div class="score-box"><div class="label">Metacritic</div><div class="val ${metaColor}">${d.meta}</div></div>`:''}
+  `;
+
+  // actions
+  const url=`https://www.cheapshark.com/redirect?dealID=${d.id}`;
+  const cheapUrl=`https://www.cheapshark.com/game/${d.gameID||d.id}`;
+  document.getElementById('modalActions').innerHTML=`
+    <a href="${url}" target="_blank" class="btn-steam">🚀 احصل عليها الآن</a>
+    <a href="${cheapUrl}" target="_blank" class="btn-cheap">⚖ مقارنة الأسعار على CheapShark</a>
+  `;
+
+  // compare section
+  const cmpEl=document.getElementById('compareSection');
+  cmpEl.innerHTML=`<div class="cmp-loading"><div class="cmp-spinner"></div>جاري جلب أسعار المتاجر الأخرى...</div>`;
+  document.getElementById('modal').style.display='flex';
+  document.body.style.overflow='hidden';
+
+  // fetch compare
+  try{
+    const lookupUrl=d.gameID
+      ?`https://www.cheapshark.com/api/1.0/games?id=${d.gameID}`
+      :`https://www.cheapshark.com/api/1.0/games?title=${encodeURIComponent(d.title)}&limit=1`;
+    const res=await fetch(lookupUrl);
+    const data=await res.json();
+    const game=Array.isArray(data)?data[0]:data;
+    if(game&&game.deals&&game.deals.length>0){
+      const rows=game.deals.map(deal=>{
+        const sName=storeMap[deal.storeID]||'Store #'+deal.storeID;
+        const sSale=toSAR(deal.price)||'مجاني';
+        const sSavings=Math.round(parseFloat(deal.savings));
+        const dUrl=`https://www.cheapshark.com/redirect?dealID=${deal.dealID}`;
+        const isBest=deal.dealID===id?'best':'';
+        return `<tr><td class="${isBest}">${sName}${isBest?` <span class="badge bc" style="font-size:9px">الأفضل</span>`:''}</td><td class="${isBest}">${sSale}</td><td class="${isBest}">${sSavings}%</td><td><a href="${dUrl}" target="_blank">اشتري ↗</a></td></tr>`;
+      }).join('');
+      cmpEl.innerHTML=`
+        <h4 style="font-size:13px;color:var(--purple);margin-bottom:8px">⚖ مقارنة الأسعار بين المتاجر</h4>
+        <table class="compare-table">
+          <thead><tr><th>المتجر</th><th>السعر (ر.س)</th><th>الخصم</th><th>رابط</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    } else {
+      cmpEl.innerHTML=`<p style="font-size:12px;color:var(--muted);margin-bottom:12px">لا توجد بيانات مقارنة إضافية</p>`;
+    }
+  }catch(e){
+    cmpEl.innerHTML=`<p style="font-size:12px;color:var(--muted);margin-bottom:12px">تعذّر جلب بيانات المقارنة</p>`;
+  }
+}
+
+function closeModal(e){if(e.target===document.getElementById('modal'))closeModalDirect();}
+function closeModalDirect(){
+  document.getElementById('modal').style.display='none';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
+
+/* ── TABS ── */
+function switchTab(tab){
+  currentTab=tab;
+  ['deals','favs','alerts'].forEach(t=>{
+    document.getElementById('page-'+t).style.display=t===tab?'block':'none';
+    document.getElementById('tab-'+t).classList.toggle('on',t===tab);
+  });
+  if(tab==='favs') renderFavs();
+  if(tab==='alerts'){renderAlertList();checkAlerts();}
+}
+
+/* ── TOAST ── */
+function toast(msg,type='cyan'){
+  const el=document.getElementById('toast');
+  el.textContent=msg;
+  el.className='toast'+(type==='gold'?' gold-toast':'');
+  setTimeout(()=>el.classList.add('show'),10);
+  setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+/* ── INIT ── */
+updateFavCount();
+updateAlertCount();
+renderAlertList();
+loadFirst();
+</script>
+</body>
+</html>
